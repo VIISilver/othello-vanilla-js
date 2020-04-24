@@ -1,0 +1,13 @@
+#board {
+    margin-left: 270px;
+}
+.row {
+    display: flex;
+}
+
+.tile {
+    width: 100px;
+    height: 100px;
+    background: lightgreen;
+    border: 1px solid black;
+}
