@@ -27,25 +27,34 @@
             Checks whether this tile is a legal move for the current player
         }
 
+    Adding click handlers to highlighted tiles.  Remove them at the moment any other tile is clicked.
+
+    Move validation will be doing:
+        Check for legal moves
+        Set isHighlighted to true for all legal moves
+        Add click handlers to highlighted tiles.
+        
+    Highlighted tile clicked
+        Set isHighlighted to false for all tiles.
+        Remove click handlers from all divs
+        Logic for capturing pieces
+        
+
 */
 (function() {
     let body = document.getElementById("body");
     
-    let blackPlayer = new Player(true);
-    let whitePlayer = new Player(false);
+    let currentPlayer = new CurrentPlayer("black");
 
     let board = [];
 
     body.onload = function() {
-        document.getElementById("header").innerText = "Othello";
+        document.getElementById("header").innerText = currentPlayer.color === "black" ? "Black player's turn" : "White player's turn";
         createBoard();
-    
-        console.log("it works");
     }
     
-    function Player(blackBool) {
-        this.black = blackBool;
-        this.active = blackBool;
+    function CurrentPlayer(color) {
+        this.color = color;
     }
 
     function Tile(id) {
@@ -53,6 +62,25 @@
         this.id = id;
         this.color = "";
         this.moveValidation = function() {};
+    }
+
+    function checkForLegalMoves() {
+        for (let y = board.length - 1; y >= 0; y--) {
+            for (let x = 0; x < board[y].length; x++) {
+                if (board[x][y].color === '') {
+                    checkDirection(board[x][y], x, y);
+                    
+                }
+
+            }
+        }
+    }
+
+    function checkDirection(tile, x, y) {
+        // Check if we are on the bottom row of the board
+
+            // Check if the tile below is not the currentPlayer's color and that it is not an empty string
+
     }
 
     function createBoard() {
@@ -67,21 +95,39 @@
             
                 let tile = document.createElement("div");
                 tile.setAttribute("class", "tile");
-                tile.setAttribute("id", `${i}${j}`);
+                tile.setAttribute("id", `${j}${i}`);
 
-                tile.innerText = `${i}${j}`;
+                let piece = document.createElement("span");
 
+                // TODO: Remove below
+                tile.innerText = `${j}${i}`;
+
+                tile.appendChild(piece);
                 divRow.appendChild(tile);
 
-                let tileObj = new Tile(`${i}${j}`);
-                row.push(tileObj)
+                let tileObj = new Tile(`${j}${i}`);
+                if (`${j}${i}` === "33" || `${j}${i}` === "44" || `${j}${i}` === "43" || `${j}${i}` === "34") {
+                    addStartingPieces(tileObj, tile);
+                }
+                row.push(tileObj);
             }
     
             board.push(row);
             document.getElementById("board").appendChild(divRow);
         }
-    
+        checkForLegalMoves();
         console.log(board);
+    }
+
+    function addStartingPieces(tile, tileElement) {
+        if (tile.id === "33" || tile.id === "44") {
+            tile.color = "white";
+            tileElement.setAttribute("class", "tile white");
+        }
+        else {
+            tile.color = "black";
+            tileElement.setAttribute("class", "tile black");
+        }
     }
 
 }())

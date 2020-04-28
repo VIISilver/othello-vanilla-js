@@ -1,5 +1,5 @@
 #board {
-    margin-left: 270px;
+    margin-left: 285px;
 }
 .row {
     display: flex;
@@ -10,4 +10,20 @@
     height: 100px;
     background: lightgreen;
     border: 1px solid black;
+}
+
+.white span {
+    display: inline-block;
+    background-color: white;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+}
+
+.black span {
+    display: inline-block;
+    background-color: black;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
 }
